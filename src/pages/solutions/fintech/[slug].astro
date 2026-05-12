@@ -1,0 +1,27 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar.jsx";
+import FinTechDetailPage from "../../../react-pages/FinTechDetailPage.jsx";
+
+export function getStaticPaths() {
+  const slugs = [
+    { slug: "digital-lending",    title: "Digital Lending" },
+    { slug: "wealth-management",  title: "Wealth Management" },
+    { slug: "payments",           title: "Payments" },
+    { slug: "investment-trading", title: "Investment & Trading" },
+    { slug: "neo-banking",        title: "Neo Banking" },
+    { slug: "embedded-finance",   title: "Embedded Finance" },
+  ];
+  return slugs.map(({ slug, title }) => ({
+    params: { slug },
+    props: { slug, title },
+  }));
+}
+
+const { slug, title } = Astro.props;
+---
+
+<Layout title={`${title} — FinTech Solutions — TechStalwarts`}>
+  <Navbar client:load />
+  <FinTechDetailPage solutionKey={slug} client:load />
+</Layout>

@@ -1,0 +1,40 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "TechStalwarts — Enterprise AI & Software Engineering",
+  description = "TechStalwarts builds, scales, and modernizes digital products for startups, SMBs, and enterprises.",
+} = Astro.props;
+
+import "../index.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/images/techstalwarts-logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Anti-FOUC: apply saved theme before first paint -->
+    <script is:inline>
+      (function () {
+        try {
+          var theme = localStorage.getItem("theme") || "light";
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.jsx";
+import AboutPage from "../react-pages/AboutPage.jsx";
+---
+
+<Layout title="About Us — TechStalwarts">
+  <Navbar client:load />
+  <AboutPage client:load />
+</Layout>

@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.jsx";
+import AIStudioPage from "../react-pages/AIStudioPage.jsx";
+---
+
+<Layout title="Nexa — AI Development Studio">
+  <Navbar client:load />
+  <AIStudioPage client:load />
+</Layout>

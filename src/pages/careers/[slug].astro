@@ -1,0 +1,20 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.jsx";
+import JobDetailPage from "../../react-pages/JobDetailPage.jsx";
+import { JOBS } from "../../data/jobs.js";
+
+export function getStaticPaths() {
+  return JOBS.map((job) => ({
+    params: { slug: job.slug },
+    props: { slug: job.slug, title: job.title },
+  }));
+}
+
+const { slug, title } = Astro.props;
+---
+
+<Layout title={`${title} — TechStalwarts Careers`}>
+  <Navbar client:load />
+  <JobDetailPage slug={slug} client:load />
+</Layout>

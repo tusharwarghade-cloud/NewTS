@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.jsx";
+import HomePage from "../react-pages/HomePage.jsx";
+---
+
+<Layout title="TechStalwarts — Enterprise AI & Software Engineering">
+  <Navbar client:load />
+  <HomePage client:load />
+</Layout>

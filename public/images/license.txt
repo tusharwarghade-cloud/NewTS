@@ -1,0 +1,11 @@
+Model Information:
+* title:	Saturn (PBR TEXTURES)
+* source:	https://sketchfab.com/3d-models/saturn-pbr-textures-c13e50d03086419180356374390070a5
+* author:	Azariah Animates (https://sketchfab.com/Azariah_Animates)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Saturn (PBR TEXTURES)" (https://sketchfab.com/3d-models/saturn-pbr-textures-c13e50d03086419180356374390070a5) by Azariah Animates (https://sketchfab.com/Azariah_Animates) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,364 @@
+---
+// Standalone page — no shared layout
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airplanes. — TechStalwarts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
+
+      :root {
+        --padding: 10vmin;
+        --color-background: #D0CBC7;
+        --font-size-large: 8vw;
+        --font-size-medium: 4vw;
+        --font-size-normal: 2vw;
+      }
+      @media only screen and (min-width: 800px) {
+        :root { --font-size-large:64px; --font-size-medium:32px; --font-size-normal:16px; }
+      }
+      @media only screen and (max-width: 500px) {
+        :root { --font-size-large:40px; --font-size-medium:20px; --font-size-normal:14px; }
+      }
+
+      a { color: white; }
+      ul { margin:0; padding:0; list-style:none; }
+      li { margin-top:10px; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%; min-width: 100%;
+        font-family: "Libre Baskerville", serif;
+        background-color: var(--color-background);
+        font-weight: 400;
+        font-size: var(--font-size-normal);
+        overflow-x: hidden;
+      }
+
+      #three-canvas {
+        position: fixed;
+        top: 0; left: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .content { position: relative; z-index: 1; }
+      .content .trigger { position: absolute; top: 0; height: 100%; }
+      .content .section {
+        position: relative;
+        padding: var(--padding);
+        --pad2: calc(var(--padding) * 2);
+        width: calc(100vw - var(--pad2));
+        height: calc(100vh - var(--pad2));
+        margin: 0 auto;
+        z-index: 2;
+      }
+      .content .section.dark  { color: white; background-color: black; }
+      .content .section.right { text-align: right; }
+
+      .content .blueprint {
+        position: relative;
+        background-color: #131C2A;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+          linear-gradient(90deg,rgba(255,255,255,0.1) 1px, transparent 1px),
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg,rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 100px 100px,100px 100px,20px 20px,20px 20px;
+        background-position: -2px -2px,-2px -2px,-1px -1px,-1px -1px;
+        background-attachment: fixed;
+      }
+      .content .blueprint svg {
+        position: fixed; top:0; left:0;
+        width:100vw; height:100vh;
+        stroke: white; pointer-events: none;
+        visibility: hidden; z-index: 10;
+      }
+      .content .blueprint .dark { background-color: transparent; }
+
+      .content .ground-container { position: relative; overflow: hidden; }
+      .content .ground-container .parallax {
+        position: absolute; top:0; left:0; right:0; bottom:-100px;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: cover;
+        transform-origin: top center;
+      }
+      .content .ground-container .ground {
+        z-index: -1;
+        background-image: url("https://assets.codepen.io/557388/background-reduced.jpg");
+      }
+      .content .ground-container .clouds {
+        z-index: 2;
+        background-image: url("https://assets.codepen.io/557388/clouds.png");
+      }
+
+      .content .scroll-cta, .content .credits { position:absolute; bottom:var(--padding); }
+      .content .scroll-cta { font-size:var(--font-size-medium); opacity:0; }
+
+      .content .sunset {
+        background: url("https://assets.codepen.io/557388/sunset-reduced.jpg") no-repeat top center;
+        background-size: cover;
+      }
+      .content h1, .content h2 {
+        font-size: var(--font-size-large);
+        margin: 0vmin 0 2vmin 0;
+        font-weight: 700; display: inline;
+      }
+      .content h3 { font-size:var(--font-size-medium); font-weight:400; margin:0; }
+      .content .end h2 { margin-bottom: 50vh; }
+      .content .loading {
+        position: fixed; width:100vw; height:100vh;
+        top:0; left:0; display:flex;
+        align-items:center; justify-content:center;
+        font-size:var(--font-size-medium); z-index:100;
+        background: var(--color-background);
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="three-canvas"></canvas>
+
+    <div class="content">
+      <div class="loading">Loading…</div>
+      <div class="trigger"></div>
+
+      <div class="section">
+        <h1>Airplanes.</h1>
+        <h3>The beginners guide.</h3>
+        <p>You've probably forgotten what these are.</p>
+        <div class="scroll-cta">Scroll</div>
+      </div>
+      <div class="section right">
+        <h2>They're kinda like buses...</h2>
+      </div>
+      <div class="ground-container">
+        <div class="parallax ground"></div>
+        <div class="section right">
+          <h2>..except they leave the ground.</h2>
+          <p>Saaay what!?.</p>
+        </div>
+        <div class="section">
+          <h2>They fly through the sky.</h2>
+          <p>For realsies!</p>
+        </div>
+        <div class="section right">
+          <h2>Defying all known physical laws.</h2>
+          <p>It's actual magic!</p>
+        </div>
+        <div class="parallax clouds"></div>
+      </div>
+
+      <div class="blueprint">
+        <svg width="100%" height="100%" viewBox="0 0 100 100">
+          <line id="line-length"    x1="10" y1="80" x2="90" y2="80" stroke-width="0.5"></line>
+          <path id="line-wingspan"  d="M10 50, L40 35, M60 35 L90 50" stroke-width="0.5"></path>
+          <circle id="circle-phalange" cx="60" cy="60" r="15" fill="transparent" stroke-width="0.5"></circle>
+        </svg>
+        <div class="section dark">
+          <h2>The facts and figures.</h2>
+          <p>Lets get into the nitty gritty...</p>
+        </div>
+        <div class="section dark length">
+          <h2>Length.</h2><p>Long.</p>
+        </div>
+        <div class="section dark wingspan">
+          <h2>Wing Span.</h2><p>I dunno, longer than a cat probably.</p>
+        </div>
+        <div class="section dark phalange">
+          <h2>Left Phalange</h2><p>Missing</p>
+        </div>
+        <div class="section dark">
+          <h2>Engines</h2><p>Turbine funtime</p>
+        </div>
+      </div>
+
+      <div class="sunset">
+        <div class="section"></div>
+        <div class="section end">
+          <h2>Fin.</h2>
+          <ul class="credits">
+            <li>Animated using <a href="https://greensock.com/scrolltrigger/" target="_blank">GSAP ScrollTrigger</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/three@0.117.1/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.117.1/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/ScrollTrigger.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin3.min.js"></script>
+
+    <script is:inline>
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(DrawSVGPlugin);
+
+      // ── Renderer ──────────────────────────────────────────────────
+      const canvas   = document.getElementById('three-canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.physicallyCorrectLights = true;
+
+      const scene  = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
+      camera.position.set(0, 0, 180);
+      camera.lookAt(0, 0, 0);
+
+      // Lights
+      const ambient = new THREE.AmbientLight(0xffffff, 1.5);
+      scene.add(ambient);
+      const dirA = new THREE.DirectionalLight(0xffffff, 2.0);
+      dirA.position.set(100, 80, 150);
+      scene.add(dirA);
+      const dirB = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirB.position.set(-80, -40, -100);
+      scene.add(dirB);
+
+      function resize() {
+        const w = window.innerWidth, h = window.innerHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Continuous render loop
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // ── Model group (GSAP animates this) ──────────────────────────
+      const modelGroup = new THREE.Group();
+      scene.add(modelGroup);
+
+      // ── Load GLTF ─────────────────────────────────────────────────
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+        '/images/scene.gltf',
+        function (gltf) {
+          const model = gltf.scene;
+
+          // Compute bounding box and auto-scale to ~100 units
+          const box    = new THREE.Box3().setFromObject(model);
+          const size   = new THREE.Vector3();
+          const center = new THREE.Vector3();
+          box.getSize(size);
+          box.getCenter(center);
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const scale  = 100 / maxDim;
+          model.scale.setScalar(scale);
+          // Re-centre after scaling
+          model.position.set(
+            -center.x * scale,
+            -center.y * scale,
+            -center.z * scale
+          );
+
+          modelGroup.add(model);
+
+          // ── GSAP scroll animations ─────────────────────────────────
+          gsap.to('.loading', { autoAlpha: 0, duration: 0.5 });
+          gsap.to('.scroll-cta', { opacity: 1, delay: 0.6 });
+          gsap.set('svg', { autoAlpha: 1 });
+
+          const tau = Math.PI * 2;
+          const sd  = 1; // section duration
+
+          gsap.set(modelGroup.rotation, { y: tau * -0.25 });
+          gsap.set(modelGroup.position, { x: 80, y: -32, z: -60 });
+
+          // Parallax
+          gsap.to('.ground', {
+            y: '30%',
+            scrollTrigger: { trigger: '.ground-container', scrub: true, start: 'top bottom', end: 'bottom top' }
+          });
+          gsap.from('.clouds', {
+            y: '25%',
+            scrollTrigger: { trigger: '.ground-container', scrub: true, start: 'top bottom', end: 'bottom top' }
+          });
+
+          // SVG blueprint draw-in
+          gsap.set('#line-length',     { drawSVG: 0 });
+          gsap.set('#line-wingspan',   { drawSVG: 0 });
+          gsap.set('#circle-phalange', { drawSVG: 0 });
+
+          ScrollTrigger.create({
+            trigger: '.blueprint', start: 'top bottom', end: 'bottom top',
+            onEnter: () => gsap.set('svg', { autoAlpha: 1, stroke: 'white' }),
+            onLeave: () => gsap.set('svg', { autoAlpha: 0 }),
+            onEnterBack: () => gsap.set('svg', { autoAlpha: 1 }),
+            onLeaveBack: () => gsap.set('svg', { autoAlpha: 0 }),
+          });
+
+          gsap.to('#line-length',     { drawSVG: 100, scrollTrigger: { trigger: '.length',   scrub: true, start: 'top bottom', end: 'top top' } });
+          gsap.to('#line-wingspan',   { drawSVG: 100, scrollTrigger: { trigger: '.wingspan', scrub: true, start: 'top 25%',    end: 'bottom 50%' } });
+          gsap.to('#circle-phalange', { drawSVG: 100, scrollTrigger: { trigger: '.phalange', scrub: true, start: 'top 50%',    end: 'bottom 100%' } });
+          gsap.to('#line-length',     { opacity: 0, drawSVG: 0, scrollTrigger: { trigger: '.length',   scrub: true, start: 'top top', end: 'bottom top' } });
+          gsap.to('#line-wingspan',   { opacity: 0, drawSVG: 0, scrollTrigger: { trigger: '.wingspan', scrub: true, start: 'top top', end: 'bottom top' } });
+          gsap.to('#circle-phalange', { opacity: 0, drawSVG: 0, scrollTrigger: { trigger: '.phalange', scrub: true, start: 'top top', end: 'bottom top' } });
+
+          // Main scroll timeline
+          const tl = gsap.timeline({
+            scrollTrigger: { trigger: '.content', scrub: true, start: 'top top', end: 'bottom bottom' },
+            defaults: { duration: sd, ease: 'power2.inOut' }
+          });
+
+          let d = 0;
+          tl.to('.scroll-cta',            { duration: 0.25, opacity: 0 }, d);
+          tl.to(modelGroup.position,      { x: -10, ease: 'power1.in' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.25, y: 0, z: -tau*.05, ease:'power1.inOut' }, d);
+          tl.to(modelGroup.position,      { x: -40, y: 0, z: -60, ease:'power1.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.25, y: 0, z: tau*.05, ease:'power3.inOut' }, d);
+          tl.to(modelGroup.position,      { x: 40, y: 0, z: -60, ease:'power2.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.2, y: 0, z: -tau*.1, ease:'power3.inOut' }, d);
+          tl.to(modelGroup.position,      { x: -40, y: 0, z: -30, ease:'power2.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: 0, z: 0, y: tau*.25 }, d);
+          tl.to(modelGroup.position,      { x: 0, y: -10, z: 50 }, d);
+          d += sd; d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.25, y: tau*.5, z: 0, ease:'power4.inOut' }, d);
+          tl.to(modelGroup.position,      { z: 30, ease:'power4.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.25, y: tau*.5, z: 0, ease:'power4.inOut' }, d);
+          tl.to(modelGroup.position,      { z: 60, x: 30, ease:'power4.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.35, y: tau*.75, z: tau*.6, ease:'power4.inOut' }, d);
+          tl.to(modelGroup.position,      { z: 100, x: 20, y: 0, ease:'power4.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { x: tau*.15, y: tau*.85, z: 0, ease:'power1.in' }, d);
+          tl.to(modelGroup.position,      { z: -150, x: 0, y: 0, ease:'power1.inOut' }, d);
+          d += sd;
+
+          tl.to(modelGroup.rotation,      { duration: sd, x: -tau*.05, y: tau, z: -tau*.1, ease:'none' }, d);
+          tl.to(modelGroup.position,      { duration: sd, x: 0, y: 30, z: 320, ease:'power1.in' }, d);
+          tl.to(dirA.position,            { duration: sd, x: 0, y: 0, z: 0 }, d);
+        },
+        (xhr) => console.log('Loading: ' + Math.round(xhr.loaded / xhr.total * 100) + '%'),
+        (err) => console.error('Error loading GLTF:', err)
+      );
+    </script>
+  </body>
+</html>
